@@ -2,65 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\TagRequest;
-use App\Models\Tag;
 use App\Models\Category;
-use App\Models\Contact;
+use App\Models\Tag;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TagController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $tags = Tag::withCount('contacts')->orderBy('created_at', 'desc')->get();
-        $categories = Category::all();
-        $contacts = Contact::orderBy('created_at', 'desc')->paginate(7);
-        return view('admin.index', compact('tags', 'categories', 'contacts'));
-    }
+    use AuthorizesRequests;
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(TagRequest $request)
     {
-        Tag::create($request->validated());
-        return redirect('/admin')->with('success', 'タグを追加しました');
+        Tag::create($request=>validated());
+
+        return redirect('/admin');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Tag $tag)
     {
-        return view('admin.tags.edit', compact('tag'));
+        // Policyによる認可チェック
+        $this->authorize('update', $tag);
+
+        $categories = Category::orderBy('content')->get();
+
+        return view('tags.edit', compact('tag', 'categories'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * タグを更新
      */
     public function update(TagRequest $request, Tag $tag)
     {
+        // Policyによる認可チェック
+        $this->authorize('update', $tag);
+
         $tag->update($request->validated());
-        return redirect('/admin')->with('success', 'タグを更新しました');
+
+        return redirect('/admin');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * タグを削除
      */
     public function destroy(Tag $tag)
     {
-        $tag->contacts()->detach();
+        // Policyによる認可チェック
+        $this->authorize('delete', $tag);
+
         $tag->delete();
-        return redirect('/admin')->with('success', 'タグを削除しました');
+
+        return redirect('/admin');
     }
 }

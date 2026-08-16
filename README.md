@@ -65,8 +65,9 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-
-## 環境構築手順
+```    
+    
+    ## 環境構築手順
 
 1. **リポジトリをクローン**
 

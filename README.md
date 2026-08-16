@@ -7,8 +7,6 @@ COACHTECH お問い合わせフォーム
 ユーザーが必須項目を入力し、登録されているタグ、お問い合わせの種類を選択して送信ができる。
 登録されたメールアドレスとパスワードでログインした管理者のみ、お問い合わせ一覧・詳細の閲覧、タグの編集ができる。
 
-
-
 ## ER図
 
 ```mermaid
@@ -70,20 +68,30 @@ erDiagram
 ## 環境構築手順
 
 1. **リポジトリをクローン**
-
-    ````bash
+````bash
     git clone https://github.com/haruna-kojima/contact-form.git
-    ````
+    cd contact-form
+````
+
+2. **.env.exampleの中身を確認**
+
+データベース接続情報が以下と一致していることを確認します。
+````bash
+    DB_CONNECTION=mysql
+    DB_HOST=mysql
+    DB_PORT=3306
+    DB_DATABASE=laravel
+    DB_USERNAME=sail
+    DB_PASSWORD=password
+````
 
 2. **.envファイルの準備**
-
-    ````bash
+````bash
     cp .env.example .env
-    ````
-
+````
 3. **Composer依存パッケージのインストール**
 
-    ````bash
+````bash
     docker run --rm \
         -u "$(id -u):$(id -g)" \
         -v "$(pwd):/var/www/html" \
@@ -91,51 +99,51 @@ erDiagram
         -e COMPOSER_CACHE_DIR=/tmp/composer_cache \
         laravelsail/php82-composer:latest \
         composer install --ignore-platform-reqs
-    ````
+````
 
 4. **Laravel Sailの起動**
 
-    ````bash
+````bash
     ./vendor/bin/sail up -d
-    ````
+````
 
 5. **アプリケーションキーの生成**
 
-    ````bash
+````bash
     ./vendor/bin/sail artisan key:generate
-    ````
+````
 
 6. **データベースのマイグレーションと初期データ投入**
 
-    ````bash
+````bash
     ./vendor/bin/sail artisan migrate --seed
-    ````
+````
 
 7. **フロントエンドのビルド**
 
-    ````bash
+````bash
     ./vendor/bin/sail npm install
     ./vendor/bin/sail npm run dev
-    ````
+````
 
 8. **アプリケーションへのアクセス**
 
-    ````bash
+````bash
     お問い合わせフォーム http://localhost
     管理者ログイン http://localhost/login
-    ````
+````
 
 ## 使用技術
 
 ````bash
-- Docker version 29.5.3
-- Laravel 10.x
-- PHP 8.2
-- Tailwind CSS
-- DB MySQL8.0
-- Webサーバー Nginx
-- フロントエンド Vite, Tailwind CSS ^3.4.0
-- 開発ツール Docker,Laravel Sail,phpAcmin
+    - Docker version 29.5.3
+    - Laravel 10.x
+    - PHP 8.2
+    - Tailwind CSS
+    - DB MySQL8.0
+    - Webサーバー Nginx
+    - フロントエンド Vite, Tailwind CSS ^3.4.0
+    - 開発ツール Docker,Laravel Sail,phpAcmin
 ````
 
 ## APIエンドポイント一覧
@@ -149,6 +157,7 @@ erDiagram
 | **お問い合わせデータの削除** | `DELETE` | `/api/v1/contacts/{id}` | パスパラメータ: `id` | `204 No Content` / `404` |
 
 ## テスト実行
+
 ````bash
     単体テストの実行
     .vendor/bin/sail artisan test tests/Unit/ContactWebUnitTest.php
@@ -157,9 +166,10 @@ erDiagram
 ````
 
 ## 開発環境URL
-
+````bash
     お問い合わせフォーム http://localhost
     管理者ログイン http://localhost/login
+````
 
 ## 作成者
 

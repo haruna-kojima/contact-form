@@ -13,7 +13,7 @@ COACHTECH お問い合わせフォーム
 
 ```mermaid
 erDiagram
-    categories ||--o{ contacts : "１つのカテゴリーは複数の問い合わせを持つ”
+    categories ||--o{ contacts : "１つのカテゴリーは複数の問い合わせを持つ"
     contacts ||--o{ contact_tag : "1つの問い合わせは複数のタグを持つ"
     tags ||--o{ contact_tag : "1つのタグは複数の問い合わせを持つ"
 

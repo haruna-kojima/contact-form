@@ -21,7 +21,6 @@ class TagController extends Controller
 
     public function edit(Tag $tag)
     {
-        // Policyによる認可チェック
         $this->authorize('update', $tag);
 
         $categories = Category::orderBy('content')->get();
@@ -29,12 +28,8 @@ class TagController extends Controller
         return view('tags.edit', compact('tag', 'categories'));
     }
 
-    /**
-     * タグを更新
-     */
     public function update(TagRequest $request, Tag $tag)
     {
-        // Policyによる認可チェック
         $this->authorize('update', $tag);
 
         $tag->update($request->validated());
@@ -42,9 +37,6 @@ class TagController extends Controller
         return redirect('/admin');
     }
 
-    /**
-     * タグを削除
-     */
     public function destroy(Tag $tag)
     {
         // Policyによる認可チェック

@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TagRequest;
 use App\Http\Requests\indexContactRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\Tag;
 use App\Models\Category;
 use App\Models\Contact;
+use App\Models\User;
+use Illuminate\Http\Request; 
+use Illuminate\Support\Facades\Hash;
 
 
 class AdminController extends Controller
 {
     public function index(indexContactRequest $request)
     {
-        $tags = Tag::withCount('contacts')->orderBy('created_at', 'desc')->get();
         $categories = Category::all();
         $query = Contact::query();
         $query = $request->filter($query);
@@ -60,5 +63,54 @@ class AdminController extends Controller
         }
         $contact->delete();
         return redirect()->route('admin.index');
+    }
+
+    public function createAdmin()
+    {
+        return view('auth.register'); 
+    }
+
+    public function storeAdmin(RegisterRequest $request)
+    {
+        $validated = $request->validated();
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
+        auth()->login($user);
+        return redirect()->route('admin.index');
+    }
+
+    public function logout(Request $request)
+    {
+        auth()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login');
+    }
+
+    public function createLogin()
+    {
+        return view('auth.login');
+    }
+
+    public function storeLogin(\Illuminate\Http\Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
+        ], [
+            'email.required' => 'メールアドレスを入力してください',
+            'password.required' => 'パスワードを入力してください',
+        ]);
+
+        if (\Illuminate\Support\Facades\Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('admin.index');
+        }
+        return back()->withErrors([
+            'email' => 'ログイン情報が登録されていません',
+        ])->onlyInput('email');
     }
 }

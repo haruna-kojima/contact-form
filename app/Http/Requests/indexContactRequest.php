@@ -6,17 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class indexContactRequest extends FormRequest
 {
-    /**
-     * 認証チェック（今回は誰でも検索可能にするため true にします）
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * 検索パラメーターのバリデーションルール
-     */
     public function rules(): array
     {
         return [

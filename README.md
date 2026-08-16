@@ -67,12 +67,12 @@ erDiagram
     }
 ```    
     
-    ## 環境構築手順
+## 環境構築手順
 
 1. **リポジトリをクローン**
 
     ````bash
-    git clone https://git@github.com:haruna-kojima/contact-form.git
+    git clone https://github.com/haruna-kojima/contact-form.git
     ````
 
 2. **.envファイルの準備**
@@ -84,13 +84,13 @@ erDiagram
 3. **Composer依存パッケージのインストール**
 
     ````bash
-docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    -e COMPOSER_CACHE_DIR=/tmp/composer_cache \
-    laravelsail/php82-composer:latest \
-    composer install --ignore-platform-reqs
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/var/www/html" \
+        -w /var/www/html \
+        -e COMPOSER_CACHE_DIR=/tmp/composer_cache \
+        laravelsail/php82-composer:latest \
+        composer install --ignore-platform-reqs
     ````
 
 4. **Laravel Sailの起動**

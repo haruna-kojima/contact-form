@@ -140,7 +140,6 @@ erDiagram
 
 ## APIエンドポイント一覧
     
-    ````bash
 | 処理内容 | HTTPメソッド | パス (URL) | 必須パラメータ | HTTPステータス |
 | :--- | :---: | :--- | :--- | :---: |
 | **お問い合わせ一覧取得** | `GET` | `/api/v1/contacts` | 任意 (検索・ページネーション) | `200 OK` |
@@ -148,22 +147,19 @@ erDiagram
 | **お問い合わせ新規作成** | `POST` | `/api/v1/contacts` | リクエストボディ (全必須項目) | `201 Created` / `422` |
 | **お問い合わせ情報の更新** | `PUT` | `/api/v1/contacts/{id}` | リクエストボディ、パス: `id` | `200 OK` / `404` / `422` |
 | **お問い合わせデータの削除** | `DELETE` | `/api/v1/contacts/{id}` | パスパラメータ: `id` | `204 No Content` / `404` |
-````
 
 ## テスト実行
-    ````bash
+````bash
     単体テストの実行
     .vendor/bin/sail artisan test tests/Unit/ContactWebUnitTest.php
     すべてのテストを一括実行
     ./vendor/bin/sail artisan test --display-deprecations
-    ````
+````
 
 ## 開発環境URL
 
-    ````bash
     お問い合わせフォーム http://localhost
     管理者ログイン http://localhost/login
-    ````
 
 ## 作成者
 
